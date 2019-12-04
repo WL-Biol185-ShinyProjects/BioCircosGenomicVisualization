@@ -46,8 +46,10 @@ ui <- dashboardPage(
               )
       ),
       
-      # BioCircos Plot tab content
+      # "BioCircos Plot" tab content
       tabItem(tabName = "plot",
+              
+              # Page header text
               h2("Your BioCircos Plot"),
               
               #Input: upload a csv file of your gene snp's
@@ -68,18 +70,24 @@ ui <- dashboardPage(
               
       ),
       
-      # Interpreting Your Data tab content
+      # "Interpreting Your Data" tab content
       tabItem(tabName = "interpret",
+              
+              # Page header text
               h2("Interpreting Your Data")
       ),
       
-      # Next Steps tab content
+      # "Next Steps" tab content
       tabItem(tabName = "nextSteps",
+              
+              # Page header text
               h2("What are my next steps?")
       ),
       
-      # Documentation tab content
+      # "Documentation tab content"
       tabItem(tabName = "documentation",
+              
+              # Page header text
               h2("Documentation")
       )
     )
