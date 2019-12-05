@@ -1,6 +1,9 @@
 ## app.R ##
 library(shiny)
 library(shinydashboard)
+library(BioCircos)
+
+BioCircos()
 
 ui <- dashboardPage(
   
@@ -97,7 +100,18 @@ ui <- dashboardPage(
                                    "text/comma-separated-values,text/plain",
                                    "application/vnd.ms-excel",
                                    "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-                        )
+                        ),
+                        
+              fluidRow(
+                
+                      # Box -- container to display BioCircos plot
+                      box(
+                        
+                        BioCircosOutput("bioPlot")
+                        
+                      )
+                    )
+                        
               ),
               
               # Aesthetic Horizontal line 
@@ -248,6 +262,27 @@ server <- function(input, output) {
                           header = input$header,
                           striped = TRUE
     )
+  })
+  
+  output$bioPlot <- renderBioCircos({
+    
+    # BioCircos -- generating the plot
+    BioCircos(
+      BioCircosSNPTrack('SNPTrack', 
+                        chromosomes = 1:5,
+                        positions = 1e+7*2:5, 
+                        values = 1:2, 
+                        colors = "RdBu", 
+                        labels = c('A to G', 'T', 'G','C', 'G'))
+      + BioCircosArcTrack('ArcTrack', 
+                          chromosomes = 1:5, 
+                          starts = 2e+7*1:5, 
+                          ends = 2.5e+7*2:5, 
+                          colors = "Accent", 
+                          labels =  c('MYC1', 'ETV6', 'IKZ3', 'P53', 'MTOR3'), 
+                          opacities = 1, 
+                          maxRadius = 0.9,
+                          minRadius = 0.5))
   })
   
 }
