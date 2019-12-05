@@ -43,6 +43,7 @@ ui <- dashboardPage(
                 box(
                   title = "Welcome",
                   status = "primary",
+                  
                   p("With advances in modern medicine and genomic sequencing, 
                     we now have the opportunity to create specific treatment protocols for 
                     patients who have not been successful in their search for effective medical 
