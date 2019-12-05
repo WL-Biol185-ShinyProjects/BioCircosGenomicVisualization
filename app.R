@@ -46,6 +46,7 @@ ui <- dashboardPage(
   
   dashboardBody(
     tabItems(
+      
       # Content -- Home tab
       tabItem(tabName = "home",
               
@@ -138,12 +139,13 @@ ui <- dashboardPage(
               )
       ),
       
-      # Tab content -- "Interpreting Your Data"
+      # Content -- "Interpreting Your Data" tab
       tabItem(tabName = "interpret",
               
               # Header -- Adding title text
               h2("Interpreting Your Data"),
               
+              # Fluid Row -- Adding place to put body text
               fluidRow(
                 box(
                   title = "Welcome",
@@ -181,7 +183,7 @@ ui <- dashboardPage(
               )
       ),
       
-      # "Next Steps" tab content
+      # Content -- "Next Steps" tab
       tabItem(tabName = "nextSteps",
               
               # Page header text
@@ -190,17 +192,18 @@ ui <- dashboardPage(
               
       ),
       
-      # "Documentation tab content"
+      # Content -- "Documentation" tab 
       tabItem(tabName = "documentation",
               
-              # Page header text
+              # Header -- Documentation header text
               h2("Documentation"),
               
               box(
                 
-                # Page body text
+                # Body -- adding paragraphs of text
                 p("Bloss CS, Jeste DV, Schork NJ. Genomics for disease treatment and prevention. 
                   Psychiatr Clin North Am. 2011;34(1):147–166. doi:10.1016/j.psc.2010.11.005"),
+                
                 p("Gonçalves GAR, Paiva RMA. Gene therapy: advances, challenges and perspectives.
                   Einstein (Sao Paulo). 2017;15(3):369–375. doi:10.1590/S1679-45082017RB4024"),
                 p("McCain J. The future of gene therapy. Biotechnol Healthc. 2005;2(3):52–60.")
