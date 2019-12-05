@@ -141,7 +141,46 @@ ui <- dashboardPage(
       tabItem(tabName = "nextSteps",
               
               # Page header text
-              h2("What are my next steps?")
+              h2("What are my next steps?"),
+              
+              fluidRow(
+                box(title = "What are my next steps?",
+                    status = "primary",
+                    
+                    # Paragraph -- body text
+                    p("It is important to note that our app visualizing and providing a general 
+                      interpretation of the Illumia Myeloid Panel sequencing data is not a diagnostic 
+                      tool, neither is Illumia Myeloid Panel itself. While the data provided by the 
+                      test and interpreted by our app is not to be used for diagnostic purposes, it 
+                      does provide valuable risk assessment data. We recommend directing all concerns 
+                      regarding the genomic data to a qualified health care professional specializing 
+                      in genetic diseases."),
+                    
+                    p("Genetic counseling gives you information about how genetic conditions might 
+                      affect you or your family. The genetic counselor further interprets the results 
+                      of your genetic testing and will also collect your personal and family medical 
+                      history. They can use this information to determine how likely it is that you or
+                      your family member is at greater risk of developing a major myeloid disorder.
+                      Based on this information, the genetic counselor can help you decide whether 
+                      further genetic testing might be right for you or your relatives."),
+                    
+                    p("Following your counseling session, you might decide to have further genetic 
+                      testing that can help you better understand your treatment options. Talking over
+                      your test results with your counselor can help address any concerns. Your 
+                      healthcare professional can refer you to other providers and advocacy and 
+                      support groups to provide you with the best line of personalizaed treatment."),
+                    
+                    p("We recommend the following first steps to look for a qualified genetic counselor:"),
+                    
+                    p("National Society of Genetic Counselors directory:"),
+                    
+                    p("https://www.nsgc.org/page/find-a-genetic-counselor"),
+                    
+                    p("American College of Medical Genetics and Genomics Genetics Clinics Database:"),
+                    
+                    p("https://www.acmg.net/ACMG/Genetic_Services_Directory_Search.aspx")
+                )
+              )
       ),
       
       # Content -- "Documentation" tab
