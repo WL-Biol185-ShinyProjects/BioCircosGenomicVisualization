@@ -56,9 +56,13 @@ ui <- dashboardPage(
               fileInput("file1",
                         "Choose a CSV file",
                         multiple = FALSE,
+                        
+                        ## Tells R what types of files can be uploaded
                         accept = c("text/csv",
                                    "text/comma-separated-values,text/plain",
-                                   ".csv")
+                                   "application/vnd.ms-excel",
+                                   "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                                   )
                         ),
               
               # Aesthetic Horizontal line 
@@ -68,6 +72,24 @@ ui <- dashboardPage(
               # if the csv input file has a header
               checkboxInput("header", "Header", TRUE),
               
+              # Adding radio buttons for user to select how
+              # data in their csv file is separated. 
+              radioButtons("separator", 
+                           "Separator",
+                           choices = c(Comma = ",",
+                                       Semicolon = ";",
+                                       Tab = "\t",
+                                       None),
+                           selected = ","),
+              
+              # Creating a main panel where user data file 
+              # can be displayed
+              mainPanel(
+                
+                # Output data file
+                tableOutput("userFile")
+                
+              )
       ),
       
       # "Interpreting Your Data" tab content
@@ -95,7 +117,19 @@ ui <- dashboardPage(
 )
 
 ## server ##
-server <- function(input, output) { }
+server <- function(input, output) {
+  
+  output$userFile <- renderTable({
+    
+    req(input$file1)
+    
+    inputFile <- read.csv(input$file1$datapath,
+                             header = input$header,
+                             striped = TRUE
+                             )
+  })
+  
+}
 
 ## Display the app ##
 shinyApp(ui, server)
