@@ -50,29 +50,29 @@ ui <- dashboardPage(
       
       # Content -- "Home" tab 
       tabItem(tabName = "home",
+              h2("Welcome"),
               
               # Body content -- "Home" tab
               fluidRow(
                 
                 box(
-                  title = "Welcome",
-                  status = "primary",
-                  
-                  # Paragraph -- body text
-                  p("With advances in modern medicine and genomic sequencing, 
-                          we now have the opportunity to create specific treatment protocols for 
-                          patients who have not been successful in their search for effective medical 
-                          management. Genetic therapies hold promise for several pathologies such as 
-                          cystic fibrosis, cardiovascular disease, HIV, AIDS, and a variety of cancers. 
-                          Gene therapy is still in its infancy in the realm of clinical research, 
-                          but is predicted to become standard treatment in future medicine."),
-                  
-                  p("With this app, you can upload a file of patient genomic data in the form 
-                          of SNP’s and generate a BioCircos plot indicating the presence and location 
-                          of a variety of mutations with known disease associations. To start 
-                          generating your plot, read more on the “BioCircos Plot” tab. To understand 
-                          your graph, read “Interpreting Your Data”. To find out more about genetic 
-                          counselling or to explore your future treatment options, read “Next Steps.”")
+                    status = "primary",
+                    
+                    # Paragraph -- body text
+                    p("With advances in modern medicine and genomic sequencing, 
+                            we now have the opportunity to create specific treatment protocols for 
+                            patients who have not been successful in their search for effective medical 
+                            management. Genetic therapies hold promise for several pathologies such as 
+                            cystic fibrosis, cardiovascular disease, HIV, AIDS, and a variety of cancers. 
+                            Gene therapy is still in its infancy in the realm of clinical research, 
+                            but is predicted to become standard treatment in future medicine."),
+                    
+                    p("With this app, you can upload a file of patient genomic data in the form 
+                            of SNP’s and generate a BioCircos plot indicating the presence and location 
+                            of a variety of mutations with known disease associations. To start 
+                            generating your plot, read more on the “BioCircos Plot” tab. To understand 
+                            your graph, read “Interpreting Your Data”. To find out more about genetic 
+                            counselling or to explore your future treatment options, read “Next Steps.”")
                 )
               )
       ),
@@ -144,8 +144,7 @@ ui <- dashboardPage(
               h2("What are my next steps?"),
               
               fluidRow(
-                box(title = "What are my next steps?",
-                    status = "primary",
+                box(status = "primary",
                     
                     # Paragraph -- body text
                     p("It is important to note that our app visualizing and providing a general 
