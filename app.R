@@ -134,7 +134,38 @@ ui <- dashboardPage(
       tabItem(tabName = "interpret",
               
               # Page header text
-              h2("Interpreting Your Data")
+              h2("Interpreting Your Data"),
+              
+              fluidRow(
+                
+                box(
+                  p("BioCircos is a popular tool to combine different biological information onto a single 
+                    interactive feature. Our test allows for the user to upload their unique genomic data 
+                    from an Illumia Myeloid Panel to discover is they have a mutation on genes that have 
+                    been previously correlated with leukemia and lymphoma."),
+                  
+                  p("When the user uploads their data in the form of a CSV file onto the app, the file 
+                    creates a plot in the form of a circle divided into 23 autosome chromosome tracks 
+                    and two sex chromosomes (XX or XY) depending on the biological sex of the user. "),
+                  
+                  p("Next you will see sub-tracts representing the genes of interest, or those sequenced, 
+                    and their relative location inside the chromosome. If you pass over the sub track 
+                    with your curser, you will be provided with the basic information of the gene in 
+                    question."),
+                  
+                  p("Our unique code then analyzes cherry-picked single nucleotides inside of each of
+                    the genes of interest to test for polymorphism. A single nucleotide polymorphism 
+                    is a mutation or change of a single nucleotide base pair. There are four nucleotides, 
+                    Thymine (T), Cytosine (C), Adenine (A), or Guanine (G) each represented by their 
+                    first letter in both the Illumia Myeloid Panel data and in our program. A single 
+                    nucleotide is represented by a single dot on the gene of question. Passing a curser 
+                    over the dot will reveal basic information including the genomic coordinate (the exact 
+                    location of the nucleotide in the chromosome) as well as the identity of the 
+                    nucleotide and if it is an SNP. If it is an SNP, it will be represented as the 
+                    nucleotide that should have been in that spot and the mutation present in the data 
+                    provided (A to G).")
+                )
+              )
       ),
       
       # Content -- "Next Steps" tab 
