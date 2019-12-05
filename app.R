@@ -1,5 +1,11 @@
 install.packages("shiny")
 install.packages("shinydashboard")
+install.packages("BioCircos")
+
+# The control genomic data
+if (!require('devtools')){install.packages('devtools')}
+
+devtools::install_github('lvulliard/BioCircos.R', build_vignettes = TRUE)
 
 ## app.R ##
 library(shiny)
@@ -15,18 +21,23 @@ ui <- dashboardPage(
     # Add sidebar menu items (tabs) with corresponding icons 
     # Icons are sourced from: https://fontawesome.com/icons?d=gallery
     sidebarMenu(
+      
       menuItem("Home", 
                tabName = "home", 
                icon = icon("home")),
+      
       menuItem("BioCircos Plot",
                tabName = "plot",
                icon = icon("first-order-alt")),
+      
       menuItem("Interpreting Your Data",
                tabName = "interpret",
                icon = icon("dna")),
+      
       menuItem("Next Steps",
                tabName = "nextSteps",
                icon = icon("shoe-prints")),
+      
       menuItem("Documentation",
                tabName = "documentation",
                icon = icon("chart-line"))
@@ -35,14 +46,15 @@ ui <- dashboardPage(
   
   dashboardBody(
     tabItems(
-      # Home tab content
+      # Content -- Home tab
       tabItem(tabName = "home",
               
-              # Home tab body content
+              # Body content -- home tab
               fluidRow(
                 box(
                   title = "Welcome",
                   status = "primary",
+                  
                   
                   p("With advances in modern medicine and genomic sequencing, 
                     we now have the opportunity to create specific treatment protocols for 
@@ -61,18 +73,18 @@ ui <- dashboardPage(
               )
       ),
       
-      # "BioCircos Plot" tab content
+      # Content -- BioCircos tab
       tabItem(tabName = "plot",
               
-              # Page header text
+              # Header -- BioCircos header text
               h2("Your BioCircos Plot"),
               
-              #Input: upload a csv file of your gene snp's
+              #Input -- upload a csv file of your gene snp's
               fileInput("file1",
                         "Choose a CSV file",
                         multiple = FALSE,
                         
-                        ## Tells R what types of files can be uploaded
+                        ## File type -- Tells R what types of files can be uploaded
                         accept = c("text/csv",
                                    "text/comma-separated-values,text/plain",
                                    "application/vnd.ms-excel",
@@ -83,8 +95,7 @@ ui <- dashboardPage(
               # Aesthetic Horizontal line 
               tags$hr(),
               
-              # Creating check box for user to indicate
-              # if the csv input file has a header
+              # Checkbox -- Check box for user to indicate if the csv input file has a header
               checkboxInput("header", 
                             "Header", 
                             TRUE),
@@ -99,21 +110,75 @@ ui <- dashboardPage(
                                        ),
                            selected = ","),
               
-              # Creating a main panel where user data file 
-              # can be displayed
+              # Main Panel -- Creating panel where user data file will display
               mainPanel(
                 
-                # Output data file
-                tableOutput("userFile")
+                # Output data file -- display table
+                tableOutput("userFile"),
+                
+                # BioCircos -- generate and display plot in main panel
+                BioCircos(
+                  BioCircosSNPTrack('SNPTrack', 
+                                    chromosomes = 1:5,
+                                    positions = 1e+7*2:5, 
+                                    values = 1:2, 
+                                    colors = "RdBu", 
+                                    labels = c('A to G', 'T', 'G','C', 'G'))
+                  + BioCircosArcTrack('ArcTrack', 
+                                      chromosomes = 1:5, 
+                                      starts = 2e+7*1:5, 
+                                      ends = 2.5e+7*2:5, 
+                                      colors = "Accent", 
+                                      labels =  c('MYC1', 'ETV6', 'IKZ3', 'P53', 'MTOR3'), 
+                                      opacities = 1, 
+                                      maxRadius = 0.9,
+                                      minRadius = 0.5))
+              )
                 
               )
       ),
       
-      # "Interpreting Your Data" tab content
+      # Tab content -- "Interpreting Your Data"
       tabItem(tabName = "interpret",
               
-              # Page header text
-              h2("Interpreting Your Data")
+              # Header -- Adding title text
+              h2("Interpreting Your Data"),
+              
+              fluidRow(
+                box(
+                  title = "Welcome",
+                  status = "primary",
+                  
+                  # Body -- Adding new paragraphs of  text
+                  p("BioCircos is a popular tool to combine different biological information 
+                    onto a single interactive feature. Our test allows for the user to upload 
+                    their unique genomic data from an Illumia Myeloid Panel to discover is they 
+                    have a mutation on genes that have been previously correlated with leukemia 
+                    and lymphoma."),
+                  
+                  p("When the user uploads their data in the form of a CSV file onto the app, 
+                    the file creates a plot in the form of a circle divided into 23 autosome 
+                    chromosome tracks and two sex chromosomes (XX or XY) depending on the 
+                    biological sex of the user. "),
+                  
+                  p("Next you will see sub-tracts representing the genes of interest or those
+                  tested and their relative location inside the chromosome. If you pass over the 
+                  sub track with your curser, you will be provided with the basic information of
+                  the gene in question."),
+                  
+                  p("Our unique code then analyzes cherry-picked single nucleotides inside of 
+                    each of the genes of interest to test for polymorphism. A single nucleotide 
+                    polymorphism is a mutation or change of a single nucleotide base pair. There 
+                    are four nucleotides, Thymine (T), Cytosine (C), Adenine (A), or Guanine (G) 
+                    each represented by their first letter in both the Illumia Myeloid Panel data 
+                    and in our program. A single nucleotide is represented by a single dot on the 
+                    gene of question. Passing a curser over the dot will reveal basic information 
+                    including the genomic coordinate (the exact location of the nucleotide in the 
+                    chromosome) as well as the identity of the nucleotide and if it is an SNP. 
+                    If it is an SNP, it will be represented as the nucleotide that should have 
+                    been in that spot and the mutation present in the data provided (A to G).")
+                )
+              )
       ),
       
       # "Next Steps" tab content
@@ -121,6 +186,8 @@ ui <- dashboardPage(
               
               # Page header text
               h2("What are my next steps?")
+              
+              
       ),
       
       # "Documentation tab content"
@@ -141,7 +208,7 @@ ui <- dashboardPage(
       )
     )
   )
-)
+
 
 ## server ##
 server <- function(input, output) {
