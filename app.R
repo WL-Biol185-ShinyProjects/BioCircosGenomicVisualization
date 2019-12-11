@@ -8,11 +8,11 @@ BioCircos()
 ui <- dashboardPage(
   
   dashboardHeader(title = "Geonomic Visualization",
-                  titleWidth = 300
+                  titleWidth = "300px"
   ),
   
   dashboardSidebar(
-    width = 300,
+    #width = 300,
     
     # SidebarMenu-- Add space for sidebar 
     sidebarMenu(
@@ -98,20 +98,19 @@ ui <- dashboardPage(
                         # Tells R what types of files can be uploaded
                         accept = c("text/csv",
                                    "text/comma-separated-values,text/plain",
-                                   "application/vnd.ms-excel",
-                                   "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                                   ".csv"
+                                  )
                         ),
-                        
+              
               fluidRow(
                 
-                      # Box -- container to display BioCircos plot
-                      box(
-                        
-                        BioCircosOutput("bioPlot")
-                        
-                      )
-                    )
-                        
+                # Box -- container to display BioCircos plot
+                box(
+                  
+                  BioCircosOutput("bioPlot"),
+                  
+                  
+                  )
               ),
               
               # Aesthetic Horizontal line 
@@ -122,18 +121,6 @@ ui <- dashboardPage(
                             "Header", 
                             TRUE),
               
-              # Radio buttons -- User selects how data in their csv file is separated. 
-              radioButtons("separator", 
-                           
-                           "Separator",
-                           
-                           choices = c(Comma = ",",
-                                       Semicolon = ";",
-                                       Tab = "\t"
-                           ),
-                           
-                           selected = ","
-              ),
               
               # Main panel -- Container where uploaded patient data table is displayed
               mainPanel(
@@ -224,6 +211,7 @@ ui <- dashboardPage(
                     
                     p("https://www.acmg.net/ACMG/Genetic_Services_Directory_Search.aspx")
                 )
+                
               )
       ),
       
@@ -251,6 +239,7 @@ ui <- dashboardPage(
   )
 )
 
+
 ## server ##
 server <- function(input, output) {
   
@@ -260,30 +249,13 @@ server <- function(input, output) {
     
     inputFile <- read.csv(input$file1$datapath,
                           header = input$header,
-                          striped = TRUE
-    )
-  })
-  
-  output$bioPlot <- renderBioCircos({
+                          stringsAsFactors=FALSE, 
+                          fileEncoding="latin1"
+                         )
     
-    # BioCircos -- generating the plot
-    BioCircos(
-      BioCircosSNPTrack('SNPTrack', 
-                        chromosomes = 1:5,
-                        positions = 1e+7*2:5, 
-                        values = 1:2, 
-                        colors = "RdBu", 
-                        labels = c('A to G', 'T', 'G','C', 'G'))
-      + BioCircosArcTrack('ArcTrack', 
-                          chromosomes = 1:5, 
-                          starts = 2e+7*1:5, 
-                          ends = 2.5e+7*2:5, 
-                          colors = "Accent", 
-                          labels =  c('MYC1', 'ETV6', 'IKZ3', 'P53', 'MTOR3'), 
-                          opacities = 1, 
-                          maxRadius = 0.9,
-                          minRadius = 0.5))
+    return(inputFile)
   })
+
   
 }
 
