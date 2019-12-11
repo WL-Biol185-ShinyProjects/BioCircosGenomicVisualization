@@ -15,8 +15,6 @@ library(BioCircos)
 BioCircos()
 
 
-
-
 BioCircos(
   BioCircosCNVTrack('BarTrack', 
                     chromosomes = 1:3, 
