@@ -59,18 +59,18 @@ ui <- dashboardPage(
               fluidRow(
                 
                 box(
-                    status = "primary",
-                    
-                    # Paragraph -- body text
-                    p("With advances in modern medicine and genomic sequencing, 
+                  status = "primary",
+                  
+                  # Paragraph -- body text
+                  p("With advances in modern medicine and genomic sequencing, 
                             we now have the opportunity to create specific treatment protocols for 
                             patients who have not been successful in their search for effective medical 
                             management. Genetic therapies hold promise for several pathologies such as 
                             cystic fibrosis, cardiovascular disease, HIV, AIDS, and a variety of cancers. 
                             Gene therapy is still in its infancy in the realm of clinical research, 
                             but is predicted to become standard treatment in future medicine."),
-                    
-                    p("With this app, you can upload a file of patient genomic data in the form 
+                  
+                  p("With this app, you can upload a file of patient genomic data in the form 
                             of SNP’s and generate a BioCircos plot indicating the presence and location 
                             of a variety of mutations with known disease associations. To start 
                             generating your plot, read more on the “BioCircos Plot” tab. To understand 
@@ -99,36 +99,42 @@ ui <- dashboardPage(
                         accept = c("text/csv",
                                    "text/comma-separated-values,text/plain",
                                    ".csv"
-                                  )
-                        ),
+                        
+                        )
+              ),
+              
+              fluidRow(
+                
+                box(
+                  # Checkbox -- Check box for user to indicate if the csv input file has a header
+                  checkboxInput("header", 
+                                "Header", 
+                                TRUE),
+                )
+              ),
               
               fluidRow(
                 
                 # Box -- container to display BioCircos plot
                 box(
                   
-                  BioCircosOutput("bioPlot"),
+                  BioCircosOutput("bioPlot")
                   
+                ),
+                
+                # Main panel -- Container where uploaded patient data table is displayed
+                box(
                   
-                  )
+                  # Output data file as table
+                  tableOutput("userFileTable")
+                  
+                )
               ),
+              
               
               # Aesthetic Horizontal line 
               tags$hr(),
               
-              # Checkbox -- Check box for user to indicate if the csv input file has a header
-              checkboxInput("header", 
-                            "Header", 
-                            TRUE),
-              
-              
-              # Main panel -- Container where uploaded patient data table is displayed
-              mainPanel(
-                
-                # Output data file as table
-                tableOutput("userFile")
-                
-              )
       ),
       
       # Content -- "Interpreting Your Data" tab
@@ -243,19 +249,22 @@ ui <- dashboardPage(
 ## server ##
 server <- function(input, output) {
   
-  output$userFile <- renderTable({
-    
-    req(input$file1)
+  userFile <- reactive({
     
     inputFile <- read.csv(input$file1$datapath,
                           header = input$header,
                           stringsAsFactors=FALSE, 
                           fileEncoding="latin1"
-                         )
+                        )
     
-    return(inputFile)
   })
-
+  
+  output$userFileTable <- renderTable({
+    
+     userFile()
+    
+  })
+  
   
 }
 
