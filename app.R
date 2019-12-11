@@ -118,7 +118,7 @@ ui <- dashboardPage(
                 # Box -- container to display BioCircos plot
                 box(
                   
-                  BioCircosOutput("bioPlot")
+                  BioCircosOutput("userBioCircos")
                   
                 ),
                 
@@ -262,6 +262,12 @@ server <- function(input, output) {
   output$userFileTable <- renderTable({
     
      userFile()
+    
+  })
+  
+  output$userBioCircos <- renderBioCircos({
+    
+    BioCircos()
     
   })
   
