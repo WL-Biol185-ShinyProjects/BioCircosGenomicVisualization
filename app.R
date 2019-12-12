@@ -2,6 +2,7 @@
 library(shiny)
 library(shinydashboard)
 library(BioCircos)
+library(DT)
 
 BioCircos()
 
@@ -53,13 +54,13 @@ ui <- dashboardPage(
       
       # Content -- "Home" tab 
       tabItem(tabName = "home",
-              h2("Welcome"),
               
               # Body content -- "Home" tab
               fluidRow(
                 
                 box(
-                  status = "primary",
+                  title = "Welcome",
+                  solidHeader = TRUE,
                   
                   # Paragraph -- body text
                   p("With advances in modern medicine and genomic sequencing, 
@@ -82,41 +83,51 @@ ui <- dashboardPage(
       
       # Content -- "BioCircos Plot" tab
       tabItem(tabName = "plot",
-              
-              # Header -- page header text
-              h2("Your BioCircos Plot"),
-              
-              #Input -- Upload a csv file of your gene snp's
-              fileInput("file1",
-                        
-                        # Text to display in upload button
-                        "Choose a CSV file",
-                        
-                        # Prevents uploading multiple files at a time
-                        multiple = FALSE,
-                        
-                        # Tells R what types of files can be uploaded
-                        accept = c("text/csv",
-                                   "text/comma-separated-values,text/plain",
-                                   ".csv"
-                        
-                        )
-              ),
+              title = "Generate Your BioCircos Plot",
+              solidHeader = TRUE,
               
               fluidRow(
-                
-                box(
-                  # Checkbox -- Check box for user to indicate if the csv input file has a header
-                  checkboxInput("header", 
-                                "Header", 
-                                TRUE),
-                )
+                  box(
+                    
+                    title = "Upload Your SNP Data File",
+                    solidHeader = TRUE,
+                    
+                    #Input -- Upload a csv file of your gene snp's
+                    fileInput("file1",
+                              
+                              
+                              # Text to display in upload button
+                              "Choose a CSV file",
+                              
+                              # Prevents uploading multiple files at a time
+                              multiple = FALSE,
+                              
+                              # Tells R what types of files can be uploaded
+                              accept = c("text/csv",
+                                         "text/comma-separated-values,text/plain",
+                                         ".csv"
+                              
+                                        )
+                            ),
+                    
+                    # Aesthetic Horizontal line 
+                    tags$hr(),
+                    
+                    h3 = "Does your file have column headers?",
+                    
+                    # Checkbox -- Check box for user to indicate if the csv input file has a header
+                    checkboxInput("header", 
+                                  "Header", 
+                                  TRUE)
+                  )
               ),
               
               fluidRow(
                 
                 # Box -- container to display BioCircos plot
                 box(
+                  title = "Your BioCircos Plot",
+                  solidHeader = TRUE,
                   
                   BioCircosOutput("userBioCircos")
                   
@@ -124,28 +135,31 @@ ui <- dashboardPage(
                 
                 # Main panel -- Container where uploaded patient data table is displayed
                 box(
+                  title = "Your Data",
+                  solidHeader = TRUE,
                   
-                  # Output data file as table
-                  tableOutput("userFileTable")
+                  # Output data file as table with scrolling capabilities
+                  
+                  column(width = 12,
+                         DT::dataTableOutput("userFileTable"), 
+                         style = "height: 400px; overflow-y: scroll; overflow-x: scroll;"
+                  )
                   
                 )
-              ),
-              
-              
-              # Aesthetic Horizontal line 
-              tags$hr(),
+              )
               
       ),
       
       # Content -- "Interpreting Your Data" tab
       tabItem(tabName = "interpret",
               
-              # Page header text
-              h2("Interpreting Your Data"),
-              
               fluidRow(
                 
                 box(
+                  
+                  title = "Interpreting Your Data",
+                  solidHeader = TRUE,
+                  
                   p("BioCircos is a popular tool to combine different biological information onto a single 
                     interactive feature. Our test allows for the user to upload their unique genomic data 
                     from an Illumia Myeloid Panel to discover is they have a mutation on genes that have 
@@ -177,12 +191,13 @@ ui <- dashboardPage(
       
       # Content -- "Next Steps" tab 
       tabItem(tabName = "nextSteps",
-              
-              # Page header text
-              h2("What are my next steps?"),
-              
+
               fluidRow(
-                box(status = "primary",
+                
+                box(
+                  
+                    title = "What are my next steps?",
+                    solidHeader = TRUE,
                     
                     # Paragraph -- body text
                     p("It is important to note that our app visualizing and providing a general 
@@ -224,11 +239,10 @@ ui <- dashboardPage(
       # Content -- "Documentation" tab
       tabItem(tabName = "documentation",
               
-              # Page header text
-              h2("Documentation"),
-              
               fluidRow(
                 box(
+                  title = "Documentation",
+                  solidHeader = TRUE,
                   
                   # Page body text
                   p("Bloss CS, Jeste DV, Schork NJ. Genomics for disease treatment and prevention. 
@@ -259,7 +273,7 @@ server <- function(input, output) {
     
   })
   
-  output$userFileTable <- renderTable({
+  output$userFileTable <- renderDataTable({
     
      userFile()
     
