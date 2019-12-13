@@ -279,21 +279,22 @@ server <- function(input, output) {
   
   bioFile <- reactive({ 
     
-    inputFile <- read.csv(input$file1$datapath,
-                          header = input$header,
-                          stringsAsFactors=FALSE, 
-                          fileEncoding="latin1"
-                          ) %>%
+    userFile()
     
-    select(patientNucleotide, 
-           geneNucleotide
-           
-    ) %>%
-    
-    gather(
-      patientNucleotide, 
-      geneNucleotide, key = "patient", value = "gene"
-    )
+      a <- userFile %>%
+        select(
+              patientNucleotide, 
+              geneNucleotide
+              ) 
+      
+      b <- userFile %>%
+        gather(
+              patientNucleotide, 
+              geneNucleotide, 
+              key = "patient", value = "gene"
+              )
+      
+      intersect(a,b)
     
     
   })
@@ -323,6 +324,7 @@ server <- function(input, output) {
                           ends = 2.5e+7*2:6))
     
   })
+
   
   
 }
