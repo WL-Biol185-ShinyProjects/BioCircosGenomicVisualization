@@ -1,6 +1,7 @@
 ## app.R ##
 library(shiny)
 library(shinydashboard)
+library(tidyverse)
 library(BioCircos)
 library(DT)
 
@@ -263,6 +264,9 @@ ui <- dashboardPage(
 ## server ##
 server <- function(input, output) {
   
+  if (is.null("file1"))
+    return(NULL)
+  
   userFile <- reactive({
     
     inputFile <- read.csv(input$file1$datapath,
@@ -273,6 +277,28 @@ server <- function(input, output) {
     
   })
   
+  bioFile <- reactive({ 
+    
+    inputFile <- read.csv(input$file1$datapath,
+                          header = input$header,
+                          stringsAsFactors=FALSE, 
+                          fileEncoding="latin1"
+                          ) %>%
+    
+    select(patientNucleotide, 
+           geneNucleotide
+           
+    ) %>%
+    
+    gather(
+      patientNucleotide, 
+      geneNucleotide, key = "patient", value = "gene"
+    )
+    
+    
+  })
+  
+  
   output$userFileTable <- renderDataTable({
     
      userFile()
@@ -280,9 +306,21 @@ server <- function(input, output) {
   })
   
   
+  
+  
   output$userBioCircos <- renderBioCircos({
     
-    BioCircos()
+    BioCircos(
+      BioCircosSNPTrack('SNPTrack', 
+                        chromosomes = 1:3,
+                        positions = 1e+7*2:4, 
+                        values = 1:3, 
+                        colors = "Accent", 
+                        labels = c('A to G', 'B', 'C'))
+      + BioCircosArcTrack('ArcTrack', 
+                          chromosomes = 1:5, 
+                          starts = 2e+7*1:5, 
+                          ends = 2.5e+7*2:6))
     
   })
   
