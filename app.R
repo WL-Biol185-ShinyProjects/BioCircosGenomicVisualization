@@ -9,11 +9,11 @@ BioCircos()
 ui <- dashboardPage(
   
   dashboardHeader(title = "Geonomic Visualization",
-                  titleWidth = "300px"
+                  titleWidth = "250px"
   ),
   
   dashboardSidebar(
-    #width = 300,
+    width = "250px",
     
     # SidebarMenu-- Add space for sidebar 
     sidebarMenu(
@@ -278,6 +278,7 @@ server <- function(input, output) {
      userFile()
     
   })
+  
   
   output$userBioCircos <- renderBioCircos({
     
